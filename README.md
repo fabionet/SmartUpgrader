@@ -65,3 +65,5 @@ Main files:
 - Local-only project for now (no remote repo required)
 - Remote version detection depends on availability/format of source endpoints
 - Some apps may be checkable but not auto-updatable; manual links are shown
+## Additional documentation
+- `ISTRUZIONI.txt` contains the Italian quick-start guide with menu usage and error-handling notes.
