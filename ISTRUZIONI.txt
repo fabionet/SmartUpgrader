@@ -1,0 +1,54 @@
+SMARTUPGRADER - ISTRUZIONI RAPIDE
+=================================
+
+REQUISITI
+---------
+1) Windows + PowerShell
+2) Connessione Internet (per controllo versioni online)
+3) Permessi di lettura registro (consigliata esecuzione come Amministratore)
+
+AVVIO
+-----
+Da PowerShell:
+  cd C:\WarpGit\SmartUpgrader
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  PowerShell -NoProfile -ExecutionPolicy Bypass -File .\AppWebUpdater.ps1
+
+MENU
+----
+1) Verifica completa: registro + confronto versioni + link manuali
+   - legge le app dal registro
+   - aggiorna la cache locale
+   - confronta versione locale/remota
+   - aggiorna riepilogo e snapshot
+
+2) Verifica completa e aggiorna
+   - fa la stessa verifica completa
+   - poi permette:
+     a) conferma app per app
+     b) aggiornamento automatico in blocco (dove supportato)
+
+3) Verifica rapida da cache + confronto con riepilogo precedente
+   - usa il dataset cache (piu veloce)
+   - confronta con snapshot precedente
+   - mostra nuove app da aggiornare
+
+0) Esci
+
+FILE LOCALI GENERATI
+--------------------
+Percorso base:
+  %LOCALAPPDATA%\AppWebUpdater
+
+File principali:
+- installed-apps-cache.json
+- last-audit-snapshot.json
+- last-audit-summary.txt
+- history\summary-YYYYMMDD-HHMMSS.txt
+
+GESTIONE ERRORI
+---------------
+- Se la cache manca o e corrotta: fallback automatico a scansione registro completa.
+- Se un controllo web fallisce su una app: l'esecuzione continua sulle altre.
+- Se c'e un errore di scrittura file: viene mostrato messaggio senza crash totale.
+- Input menu/modalita non valido: richiesta annullata in sicurezza.
