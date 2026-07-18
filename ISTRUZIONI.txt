@@ -10,7 +10,7 @@ REQUISITI
 AVVIO
 -----
 Da PowerShell:
-  cd C:\WarpGit\SmartUpgrader
+  cd C:\SmartUpgrader
   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
   PowerShell -NoProfile -ExecutionPolicy Bypass -File .\AppWebUpdater.ps1
 
