@@ -1,69 +1,63 @@
 # SmartUpgrader
-SmartUpgrader is a local PowerShell project to audit installed Windows applications and compare local versions with latest available web versions (without winget).
-## Features
-- Full installed-app scan from Windows registry (`HKLM/HKCU`)
-- Web-based latest-version checks (without winget)
-- Fast mode using cached installed-app dataset
-- Comparison with previous run to highlight newly updatable apps
-- Optional guided/automatic updates for supported installers
-- Persistent local summary/snapshot history
+SmartUpgrader is a PowerShell tool for Windows that checks installed applications, compares local versions with latest versions available online, and optionally performs guided updates without using `winget`.
 
-## Project contents
-- `AppWebUpdater.ps1`: interactive menu for full scan, fast cached scan, and optional guided updates
+## What it does
+- Scans installed applications from Windows registry (`HKLM` / `HKCU`)
+- Fetches latest versions from web sources (official endpoints / APIs)
+- Compares local vs remote versions
+- Provides manual download links
+- Supports fast checks using local cache
+- Stores run snapshots and human-readable summaries
 
 ## Requirements
-- Windows with PowerShell
-- Internet access (for remote version checks)
-- User permissions to read registry uninstall keys
-- Administrator PowerShell recommended for update/install workflows
+- Windows
+- PowerShell 5.1+ (or PowerShell 7+)
+- Internet access for version checks
+- Registry read permissions (default user usually enough)
+- Administrator PowerShell recommended when performing updates
 
-## Setup
-1. Open PowerShell.
-2. Go to project folder:
-   `cd C:\WarpGit\SmartUpgrader`
-3. If needed, allow script execution for current session:
+## Installation
+1. Clone or download the repository:
+   `git clone https://github.com/fabionet/SmartUpgrader.git`
+2. Open PowerShell and move to project folder:
+   `cd SmartUpgrader`
+3. Allow script execution for current session (if needed):
    `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
 
-## Run
-From project root:
+## Usage
+Run the tool:
 `PowerShell -NoProfile -ExecutionPolicy Bypass -File .\AppWebUpdater.ps1`
 
-## Menu options
-1. **Full check (registry + web)**
-   - Reads installed apps directly from registry
-   - Refreshes installed-app cache
-   - Compares local vs remote versions
-   - Writes summary/snapshot files
-2. **Full check + update**
-   - Runs same full check
-   - Offers:
-     - per-app confirmation mode
-     - bulk automatic mode (where supported)
-3. **Fast check (cache + web)**
-   - Uses cached installed-app list (faster startup)
-   - Compares with previous snapshot
-   - Shows newly updatable apps since last run
-0. **Exit**
+### Menu
+- `1` Full check (registry + web)
+  - Reads installed apps from registry
+  - Refreshes app cache
+  - Produces comparison report and snapshot
+- `2` Full check + update
+  - Runs full check, then update flow
+  - Supports per-app confirmation or bulk automatic mode (when supported)
+- `3` Fast check (cache + web)
+  - Uses cached app list for faster startup
+  - Highlights newly updatable apps compared to previous run
+- `0` Exit
 
-## Local data files
-Stored under:
+## Output files
+SmartUpgrader writes local state under:
 `%LOCALAPPDATA%\AppWebUpdater`
 
-Main files:
-- `installed-apps-cache.json` -> cached installed applications
-- `last-audit-snapshot.json` -> latest structured audit snapshot
-- `last-audit-summary.txt` -> latest human-readable summary
+Files:
+- `installed-apps-cache.json` -> cached installed app inventory
+- `last-audit-snapshot.json` -> last structured check result
+- `last-audit-summary.txt` -> last text summary
 - `history\summary-YYYYMMDD-HHMMSS.txt` -> historical summaries
 
-## Error handling behavior
-- Invalid/missing cache: script automatically falls back to full registry scan
-- Web lookup errors for specific apps: handled per app without stopping full run
-- Storage write errors (cache/snapshot/summary): reported without hard crash
-- Invalid menu/update mode input: safely rejected with user-facing message
+## Error handling
+- Corrupted/missing cache -> automatic fallback to full registry scan
+- Per-app web lookup errors -> logged per app, run continues
+- Write failures for cache/snapshot/summary -> reported without full crash
+- Invalid menu inputs -> safely rejected
 
 ## Notes
-- Local-only project for now (no remote repo required)
-- Remote version detection depends on availability/format of source endpoints
-- Some apps may be checkable but not auto-updatable; manual links are shown
-## Additional documentation
-- `ISTRUZIONI.txt` contains the Italian quick-start guide with menu usage and error-handling notes.
+- Auto-update depends on installer availability and silent-args compatibility.
+- Some applications may be check-only (manual update link provided).
+- Italian quick guide is available in `ISTRUZIONI.txt`.
