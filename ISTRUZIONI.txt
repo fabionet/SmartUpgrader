@@ -35,7 +35,7 @@ MENU
 
 0) Esci
 
-AVVISO SICUREZZA (MODALITA AGGIORNAMENTO)
+AVVISO SICUREZZA (MODALITÀ AGGIORNAMENTO)
 -----------------------------------------
 - La modalita di aggiornamento automatico scarica ed esegue installer da sorgenti remote.
 - Lo script, allo stato attuale, non verifica hash crittografici dei file scaricati.
