@@ -35,6 +35,13 @@ MENU
 
 0) Esci
 
+AVVISO SICUREZZA (MODALITÀ AGGIORNAMENTO)
+-----------------------------------------
+- La modalità di aggiornamento automatico scarica ed esegue installer da sorgenti remote.
+- Lo script, allo stato attuale, non verifica hash crittografici dei file scaricati.
+- Lo script, allo stato attuale, non impone la verifica della firma digitale (Authenticode) prima dell'esecuzione.
+- Se non vuoi accettare questo rischio, usa solo la verifica e installa manualmente dopo controlli aggiuntivi.
+
 FILE LOCALI GENERATI
 --------------------
 Percorso base:
