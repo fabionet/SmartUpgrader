@@ -1,4 +1,4 @@
-# Testo release suggerito
+# Testo di release suggerito
 
 ## Avviso sicurezza aggiornamenti automatici
 - La modalità di aggiornamento automatico scarica ed esegue installer da sorgenti remote.
