@@ -1,5 +1,5 @@
 # SmartUpgrader
-SmartUpgrader is a PowerShell tool for Windows that checks installed applications, compares local versions with latest versions available online, and optionally performs guided updates without using `winget`.
+SmartUpgrader is a PowerShell tool for Windows that checks installed applications, compares local versions with latest versions available online, and optionally performs guided updates — **completely independent from `winget`**, with no dependency on the Windows Package Manager.
 
 ## What it does
 - Scans installed applications from Windows registry (`HKLM` / `HKCU`)
@@ -8,6 +8,7 @@ SmartUpgrader is a PowerShell tool for Windows that checks installed application
 - Provides manual download links
 - Supports fast checks using local cache
 - Stores run snapshots and human-readable summaries
+- **Verifies Authenticode digital signatures of every downloaded installer before execution**
 
 ## Requirements
 - Windows
@@ -57,12 +58,16 @@ Files:
 - Write failures for cache/snapshot/summary -> reported without full crash
 - Invalid menu inputs -> safely rejected
 
+## Security
+SmartUpgrader downloads and executes installers from official remote sources. The following protections are in place:
+
+- **Authenticode signature verification**: every downloaded installer is checked with `Get-AuthenticodeSignature` before execution. If the signature is missing or invalid, the file is deleted and the installation is aborted.
+- **API response sanitization**: version strings from remote APIs (e.g. Node.js) are validated against a strict format before being used to construct download URLs, preventing URL injection.
+
+> For the highest level of safety, use check-only mode (option `1`) and install updates manually after your own review.
+
 ## Notes
-- Security notice for updates:
-  - Automatic update mode downloads and executes installers from remote sources.
-  - The current script does not perform cryptographic hash verification of downloaded files.
-  - The current script does not enforce digital-signature (Authenticode) validation before execution.
-  - Use automatic updates only if you accept this risk profile; otherwise use check-only mode and verify installers manually.
+- No `winget` required — SmartUpgrader works on any Windows machine with PowerShell, regardless of whether the Windows Package Manager is installed or available.
 - Auto-update depends on installer availability and silent-args compatibility.
 - Some applications may be check-only (manual update link provided).
 - Italian quick guide is available in `ISTRUZIONI.txt`.
