@@ -58,6 +58,11 @@ Files:
 - Invalid menu inputs -> safely rejected
 
 ## Notes
+- Security notice for updates:
+  - Automatic update mode downloads and executes installers from remote sources.
+  - The current script does not perform cryptographic hash verification of downloaded files.
+  - The current script does not enforce digital-signature (Authenticode) validation before execution.
+  - Use automatic updates only if you accept this risk profile; otherwise use check-only mode and verify installers manually.
 - Auto-update depends on installer availability and silent-args compatibility.
 - Some applications may be check-only (manual update link provided).
 - Italian quick guide is available in `ISTRUZIONI.txt`.
