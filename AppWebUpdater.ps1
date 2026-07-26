@@ -219,6 +219,9 @@ function Invoke-NodeCheck {
   $list = Invoke-RestMethod -Uri $uri -TimeoutSec 30
   $stable = $list | Where-Object { $_.lts -and $_.lts -ne $false } | Select-Object -First 1
   $latest = ($stable.version -replace '^v', '')
+  if ($latest -notmatch '^[0-9]+\.[0-9]+\.[0-9]+$') {
+    throw "Versione Node.js non valida ricevuta dall'API: '$latest'"
+  }
   [pscustomobject]@{
     LatestVersion = $latest
     DownloadUrl = "https://nodejs.org/dist/v$latest/node-v$latest-x64.msi"
@@ -559,6 +562,15 @@ function Download-And-InstallApp {
 
   Write-Host "Download: $($AppStatus.Name)"
   Invoke-WebRequest -Uri $AppStatus.DownloadUrl -OutFile $filePath -UseBasicParsing -TimeoutSec 180
+
+  # Verifica firma digitale Authenticode prima dell'esecuzione
+  $sig = Get-AuthenticodeSignature -FilePath $filePath
+  if ($sig.Status -ne 'Valid') {
+    Write-Host "SICUREZZA: Firma digitale non valida per $($AppStatus.Name) (Stato: $($sig.Status)). Installazione annullata." -ForegroundColor Red
+    Remove-Item $filePath -Force -ErrorAction SilentlyContinue
+    return $false
+  }
+  Write-Host "Firma verificata: $($sig.SignerCertificate.Subject)" -ForegroundColor Green
 
   Write-Host "Installazione: $($AppStatus.Name)"
   if ($AppStatus.InstallerType -eq "msi") {

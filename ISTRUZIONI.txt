@@ -38,9 +38,12 @@ MENU
 AVVISO SICUREZZA (MODALITÀ AGGIORNAMENTO)
 -----------------------------------------
 - La modalità di aggiornamento automatico scarica ed esegue installer da sorgenti remote.
-- Lo script, allo stato attuale, non verifica hash crittografici dei file scaricati.
-- Lo script, allo stato attuale, non impone la verifica della firma digitale (Authenticode) prima dell'esecuzione.
-- Se non vuoi accettare questo rischio, usa solo la verifica e installa manualmente dopo controlli aggiuntivi.
+- Lo script verifica la firma digitale Authenticode di ogni file scaricato prima dell'esecuzione.
+  Se la firma non è valida o assente, l'installazione viene annullata e il file eliminato.
+- Lo script verifica che la stringa di versione ricevuta dalle API sia nel formato atteso
+  prima di usarla per costruire URL di download (es. Node.js).
+- Per ridurre ulteriormente i rischi, usa la modalità solo-verifica (opzione 1) e
+  installa manualmente dopo aver eseguito controlli aggiuntivi.
 
 FILE LOCALI GENERATI
 --------------------
